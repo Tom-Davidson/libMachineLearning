@@ -1,0 +1,20 @@
+#!/usr/bin/env python
+
+from machinelearning import mlgraph, examples, logisticregression
+
+# Load the dataset, last column is the answer
+data = examples.examples('../mlclass-ex2/ex2data1.txt')
+
+#g = mlgraph.mlgraph()
+#g.scatter('Exams', data.getX('train'), data.getY('train'), ['Exam 1 score', 'Exam 2 score'])
+#g.show()
+
+lr = logisticregression.logisticregression()
+thetaA = [[0], [1], [0]] 				# [0 1 0]'
+XA = [[8,1,6], [3,5,7], [4,9,2]]		# magic(3)
+y = lr.hypothesis(thetaA, XA)
+print y
+
+
+# A * B 				# Matrix multiply (when both are numpy matrices, use 'A = numpy.mat(A)' to recast)
+#numpy.multiply(A, B)	# Element-wise multiply

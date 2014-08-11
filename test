@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+echo "= Unit Tests ==================================================="
+python -m unittest discover
