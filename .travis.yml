@@ -20,7 +20,7 @@ before_install:
   - sudo ln -s /run/shm /dev/shm
 
 # Dependencies
-install: "- conda install --yes python=$TRAVIS_PYTHON_VERSION atlas numpy scipy matplotlib"
+install: "conda install --yes python=$TRAVIS_PYTHON_VERSION atlas numpy scipy matplotlib"
 
 # Run tests
 script: python -m unittest discover
