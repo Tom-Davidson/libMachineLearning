@@ -29,16 +29,17 @@ class logisticregression:
             print "Unknown type '"+str(type(data))+"' in logisticregression.sigmoid()"
             return False
 
-    def hypothesis(self, theta, X):
+    def hypothesis(self, theta, X, round=True):
         theta = numpy.array(theta, dtype=float) # Recast to a numpy matrix of floats
         X = numpy.array(X, dtype=float) # Recast to a numpy matrix of floats
         if theta.shape[0] == 1: # Check which orientation theta is in
             theta = theta.T
-        print "theta:"
-        print theta
-        print "X:"
-        print X
-        return self.sigmoid(theta.T * X)
+        hox = self.sigmoid(theta.T.dot(X)).T
+        if round:
+            for i in range(hox.shape[1]):
+                print hox[0,i]
+                hox[0,i] = round(hox[0,i])
+        return hox
 
     def initialParameters(self, X):
         X = numpy.array(X, dtype=float) # Recast to a numpy matrix of floats
@@ -80,8 +81,9 @@ class logisticregression:
             print "TEx:"
             print trainingExample
             answer = float(y[(i,0)]) # pull out answer into a numpy.float64 rather than 1x1 matrix
+            print "Answer: "+str(answer)
             hox = self.hypothesis(theta, trainingExample)[(0,0)]
-            print "got hox"
+            print "Hox: "+str(hox)
             exampleCost = ( -answer * math.log(hox) ) - ( (1-answer) * math.log(1-hox) )
             sum = sum + exampleCost
         return (1/float(m)) * sum

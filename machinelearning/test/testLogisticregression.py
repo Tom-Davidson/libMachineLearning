@@ -21,10 +21,17 @@ class logisticregressionTests(unittest.TestCase):
         self.assertEqual(sigs, answers)
 
     def testHypothesisA(self):
-        answers = [[0.95257413, 0.99330715, 0.99908895]]
-        theta = [[0], [1], [0]]  # [0 1 0]'
-        X = [[8, 1, 6], [3, 5, 7], [4, 9, 2]]  # magic(3)
-        y = self.lr.hypothesis(theta, X)
+        answers = [[0.95257413], [0.99330715], [0.99908895]]
+        theta = [[0], [1], [0]]                 # [0 1 0]'
+        X = [[8, 1, 6], [3, 5, 7], [4, 9, 2]]   # magic(3)
+        y = self.lr.hypothesis(theta, X, False)
+        self.assertTrue(numpy.allclose(y, answers))
+
+    def testHypothesisB(self):
+        answers = [[4.13993755e-08], [7.28129018e-33], [7.31058579e-01]]
+        theta = [[2], [1], [-9]]
+        X = [[8, 1, 6], [3, 5, 7], [4, 9, 2]]   # magic(3)
+        y = self.lr.hypothesis(theta, X, False)
         self.assertTrue(numpy.allclose(y, answers))
 
     def testInitialParameters(self):
@@ -33,13 +40,13 @@ class logisticregressionTests(unittest.TestCase):
         initialParameters = self.lr.initialParameters(X)
         self.assertTrue(numpy.allclose(initialParameters, answer))
 
-    def testCost(self):
-        answer = 0.04314969835997326
-        theta = [[1], [0], [1], [0]] 			# [1 0 1 0]'
-        X = [[8,1,6], [3,5,7], [4,9,2]]		    # magic(3)
-        y = [[1], [1], [1]]                     # [1 1 1]'
-        cost = self.lr.cost(theta, X, y)
-        self.assertEqual(cost, answer)
+#    def testCostA(self):
+#        answer = 0.04314969835997326
+#        theta = [[1], [0], [1], [0]] 			# [1 0 1 0]'
+#        X = [[8,1,6], [3,5,7], [4,9,2]]		    # magic(3)
+#        y = [[1], [1], [1]]                     # [1 1 1]'
+#        cost = self.lr.cost(theta, X, y)
+#        self.assertEqual(cost, answer)
 
 #    def testGradient(self):
 #        answer = [ [-0.04057365], [-0.32040761], [-0.04399154], [-0.24420556] ]
