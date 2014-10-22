@@ -15,15 +15,13 @@ class logisticregression:
             for element in range(len(data)):
                 data[element] = self.sigmoid(data[element])
             return data
-        elif isinstance(data, numpy.matrixlib.defmatrix.matrix):
+        elif isinstance(data, numpy.matrixlib.defmatrix.matrix) or isinstance(data, numpy.ndarray):
             for row in range(data.shape[0]):
-                for col in range(data.shape[1]):
-                    data[row, col] = self.sigmoid(data.item(row, col))
-            return data
-        elif isinstance(data, numpy.ndarray):
-            for row in range(data.shape[0]):
-                for col in range(data.shape[1]):
-                    data[row, col] = self.sigmoid(data.item(row, col))
+                if data.ndim > 1:
+                    for col in range(data.shape[1]):
+                       data[row, col] = self.sigmoid(data.item(row, col))
+                else:
+                    data[row] = self.sigmoid(data.item(row))
             return data
         else:
             print "Unknown type '"+str(type(data))+"' in logisticregression.sigmoid()"
@@ -36,9 +34,7 @@ class logisticregression:
             theta = theta.T
         hox = self.sigmoid(theta.T.dot(X)).T
         if round:
-            for i in range(hox.shape[1]):
-                print hox[0,i]
-                hox[0,i] = round(hox[0,i])
+            hox.round(0)
         return hox
 
     def initialParameters(self, X):
@@ -69,7 +65,6 @@ class logisticregression:
             return numpy.concatenate((biasFeatures, X), axis=1) # Add the bias units
 
     def cost(self, theta, X, y):
-        print "cost()"
         theta = numpy.array(theta, dtype=float) # Recast to a numpy matrix of floats
         X = numpy.array(X, dtype=float) # Recast to a numpy matrix of floats
         y = numpy.array(y, dtype=float) # Recast to a numpy matrix of floats
@@ -77,13 +72,13 @@ class logisticregression:
         X = self.addBias(X)
         sum = 0.0
         for i in range(m):
-            trainingExample = X[i, :].T # pull out this example and turn into a vector
-            print "TEx:"
-            print trainingExample
-            answer = float(y[(i,0)]) # pull out answer into a numpy.float64 rather than 1x1 matrix
-            print "Answer: "+str(answer)
+            # pull out this example and turn into a vector
+            trainingExample = X[i, :] # 1d numpy.ndarray
+            trainingExample = numpy.expand_dims(trainingExample, axis=0) # 2d numpy.ndarray single row
+            trainingExample = trainingExample.T # 2d numpy.ndarray vector
+            # pull out answer into a numpy.float64 rather than 1x1 matrix
+            answer = float(y[(i,0)])
             hox = self.hypothesis(theta, trainingExample)[(0,0)]
-            print "Hox: "+str(hox)
             exampleCost = ( -answer * math.log(hox) ) - ( (1-answer) * math.log(1-hox) )
             sum = sum + exampleCost
         return (1/float(m)) * sum
@@ -98,10 +93,12 @@ class logisticregression:
         for j in range(theta.shape[0]):
             sum = 0.0
             for i in range(m):
-                trainingExample = X[i, :].T # pull out this example and turn into a vector
-                print "TEx:"
-                print trainingExample
-                answer = float(y[(i,0)]) # pull out answer into a numpy.float64 rather than 1x1 matrix
+                # pull out this example and turn into a vector
+                trainingExample = X[i, :] # 1d numpy.ndarray
+                trainingExample = numpy.expand_dims(trainingExample, axis=0) # 2d numpy.ndarray single row
+                trainingExample = trainingExample.T # 2d numpy.ndarray vector
+                # pull out answer into a numpy.float64 rather than 1x1 matrix
+                answer = float(y[(i,0)])
                 hox = self.hypothesis(theta, trainingExample)[(0,0)]
                 sum = sum + ( (hox - answer) * X[i, j] )
             grad[j] = (1/float(m)) * sum

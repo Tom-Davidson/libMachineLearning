@@ -7,7 +7,6 @@ class logisticregressionTests(unittest.TestCase):
 
     def setUp(self):
         from machinelearning import mlgraph, examples, logisticregression
-
         self.lr = logisticregression.logisticregression()
 
     def testSigmoid2D(self):
@@ -40,18 +39,18 @@ class logisticregressionTests(unittest.TestCase):
         initialParameters = self.lr.initialParameters(X)
         self.assertTrue(numpy.allclose(initialParameters, answer))
 
-#    def testCostA(self):
-#        answer = 0.04314969835997326
-#        theta = [[1], [0], [1], [0]] 			# [1 0 1 0]'
-#        X = [[8,1,6], [3,5,7], [4,9,2]]		    # magic(3)
-#        y = [[1], [1], [1]]                     # [1 1 1]'
-#        cost = self.lr.cost(theta, X, y)
-#        self.assertEqual(cost, answer)
+    def testCostA(self):
+        answer = 0.04314969835997326
+        theta = [[1], [0], [1], [0]] 			# [1 0 1 0]'
+        X = [[8,1,6], [3,5,7], [4,9,2]]		    # magic(3)
+        y = [[1], [1], [1]]                     # [1 1 1]'
+        cost = self.lr.cost(theta, X, y)
+        self.assertEqual(cost, answer)
 
-#    def testGradient(self):
-#        answer = [ [-0.04057365], [-0.32040761], [-0.04399154], [-0.24420556] ]
-#        theta = [[1], [0], [1], [0]] 			# [1 0 1 0]'
-#        X = [[8,1,6], [3,5,7], [4,9,2]]		    # magic(3)
-#        y = [[1], [1], [1]]                     # [1 1 1]'
-#        grad = self.lr.gradient(theta, X, y)
-#        self.assertTrue(numpy.allclose(grad, answer))
+    def testGradient(self):
+        answer = [ [-0.04057365], [-0.32040761], [-0.04399154], [-0.24420556] ]
+        theta = [[1], [0], [1], [0]] 			# [1 0 1 0]'
+        X = [[8,1,6], [3,5,7], [4,9,2]]		    # magic(3)
+        y = [[1], [1], [1]]                     # [1 1 1]'
+        grad = self.lr.gradient(theta, X, y)
+        self.assertTrue(numpy.allclose(grad, answer))
